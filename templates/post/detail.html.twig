@@ -1,0 +1,56 @@
+{# templates/post/detail.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>{{ post.title }}</h1>
+    {% if post.picture %}
+        <img src="{{ asset('uploads/pictures/' ~ post.picture) }}" class="img-fluid mb-4 d-block mx-auto" alt="{{ post.title }}" width="30%">
+    {% endif %}
+    <div class="post-content">
+        {{ post.content|markdown_to_html|raw }}
+    </div>
+    <p><strong>Auteur :</strong> {{ post.user.firstName }} {{ post.user.lastName }}</p>
+    <p><strong>Catégorie :</strong> {{ post.category.name }}</p>
+    <p><strong>Publié le :</strong> {{ post.publishedAt|date('d/m/Y') }}</p>
+
+    <a href="{{ path('news') }}" class="btn btn-secondary">Retour à la liste</a>
+
+    {% if is_granted('ROLE_ADMIN') or post.user == app.user %}
+        <a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-warning">Modifier le post</a>
+        <form action="{{ path('post_delete', {'id': post.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    {% endif %}
+
+    {# Affichage des Commentaires Approuvés #}
+    <div class="mt-5">
+        <h3>Commentaires</h3>
+        {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p>{{ comment.conten }}</p>
+                    <small>Par {{ comment.user.firstName }} {{ comment.user.lastName }} le {{ comment.createdAt|date('d/m/Y') }}</small>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun commentaire approuvé pour ce post.</p>
+        {% endfor %}
+    </div>
+
+    {# Formulaire de Commentaire pour les Utilisateurs Connectés #}
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.getIsActive() %}
+        <div class="mt-5">
+            <h3>Ajouter un Commentaire</h3>
+            {{ form_start(commentForm) }}
+                {{ form_row(commentForm.conten) }}
+                <button class="btn btn-primary">Envoyer</button>
+            {{ form_end(commentForm) }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

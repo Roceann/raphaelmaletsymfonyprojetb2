@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Post{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Modifier le Post</h1>
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.title) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.content) }}
+        {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.content) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.picture) }}
+        {{ form_widget(form.picture, {'attr': {'class': 'form-control-file'}}) }}
+        {{ form_errors(form.picture) }}
+    </div>
+        <button class="btn btn-warning mt-3">Mettre à jour</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

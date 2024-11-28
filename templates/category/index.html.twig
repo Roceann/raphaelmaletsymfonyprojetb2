@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des catégories{% endblock %}
+
+{% block body %}
+<div class="container mt-4 page-container">
+    <h1>Gestion des catégories</h1>
+    
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="btn-group mb-3">
+            <a href="{{ path('category_new') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Nouvelle catégorie
+            </a>
+            <a href="{{ path('news') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-newspaper"></i> Aller aux News
+            </a>
+        </div>
+    {% endif %}
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('category_edit', {'id': category.id}) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-pencil-alt"></i> Éditer
+                            </a>
+                            
+                            <form method="post" action="{{ path('category_delete', {'id': category.id}) }}" class="auto-width-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucune catégorie trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

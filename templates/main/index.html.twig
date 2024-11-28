@@ -1,0 +1,37 @@
+{# templates/main/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Raphael's True News{% endblock %}
+
+{% block body %}
+<div class="container mt-5 page-container">
+    <h1 class="mt-5">Bienvenue sur Raphael's True News</h1>
+    <p class="lead">Votre source fiable d'actualités vérifiées et impartiales.</p>
+    <p>Une vision moderne de l’information</p>
+    <p>Dans un monde où l’information circule à une vitesse fulgurante, nous croyons à l’importance de trier, vérifier et contextualiser. Raphael’s True News, c’est l’engagement de fournir des actualités fiables, pertinentes et captivantes. Que vous cherchiez à comprendre les grands enjeux mondiaux, à explorer des sujets de société ou à découvrir des histoires inspirantes, nous mettons un point d’honneur à couvrir l’actualité sous un angle humain et accessible.</p>
+    <p>Un site pour tous les curieux</p>
+    <p>Notre contenu s’adresse à toutes les générations et à tous les centres d’intérêt. Vous êtes passionné par la politique, l’économie, la culture ou le sport ? Vous souhaitez en savoir plus sur des sujets de niche ou sur les tendances émergentes ? Nous avons ce qu’il vous faut. Notre mission est de rendre l’information intéressante, pédagogique et à la portée de tous.</p>
+    <p>Des rubriques variées pour une information complète</p>
+    <ul>
+        <li>Actualités nationales et internationales : Ne ratez rien des grandes affaires qui façonnent notre monde.</li>
+        <li>Analyse et opinions : Nos experts décryptent pour vous les sujets complexes pour aller au-delà des titres.</li>
+        <li>Société et tendances : Découvrez des histoires captivantes, des innovations qui changent notre quotidien ou des débats qui animent notre époque.</li>
+        <li>Culture et divertissement : Films, musique, événements, littérature… La culture a aussi sa place sur Raphael’s True News.</li>
+        <li>Environnement et technologie : Les défis du futur sont déjà là. Explorez avec nous les enjeux écologiques et technologiques qui redéfinissent nos vies.</li>
+        <li>Humour et parodie : Parce que l’actualité ne doit pas toujours être grave, nous aimons aussi vous faire sourire grâce à des articles décalés et originaux.</li>
+    </ul>
+    <p>Nos engagements</p>
+    <ul>
+        <li>Fiabilité et transparence : Chez Raphael’s True News, nous vérifions nos sources et assumons nos biais lorsqu’ils existent.</li>
+        <li>Accessibilité et clarté : Pas de jargon incompréhensible ou d’informations incomplètes. Nous voulons que chaque visiteur reparte avec une compréhension enrichie.</li>
+        <li>Interaction avec nos lecteurs : Votre voix compte. Participez aux débats, posez vos questions ou partagez vos idées. Notre plateforme est aussi la vôtre.</li>
+        <li>Respect de l’éthique journalistique : Nous privilégions la vérité et la responsabilité avant tout.</li>
+    </ul>
+    <p>Un site pensé pour vous</p>
+    <p>Facile d’utilisation, Raphael’s True News est conçu pour s’adapter à vos besoins. Consultez nos articles sur ordinateur, tablette ou smartphone grâce à notre design moderne et réactif. Inscrivez-vous à notre newsletter pour recevoir chaque semaine une sélection des meilleurs articles directement dans votre boîte mail. Suivez-nous également sur les réseaux sociaux pour des mises à jour en temps réel.</p>
+    <p>Rejoignez la communauté Raphael’s True News</p>
+    <p>Raphael’s True News, ce n’est pas seulement un site d’information. C’est une communauté de passionnés, de curieux et de citoyens engagés. Ensemble, nous croyons que s’informer, c’est aussi agir pour un monde plus éclairé et responsable. Alors, que vous soyez un lecteur assidu, un commentateur actif ou simplement de passage, nous sommes ravis de vous accueillir.</p>
+    <p>Plongez dès maintenant dans l’actualité autrement, avec Raphael’s True News, et découvrez l’information comme vous ne l’avez jamais vue.</p>
+    <a href="{{ path('news') }}" class="btn btn-primary">Voir les dernières actus</a>
+</div>
+{% endblock %}

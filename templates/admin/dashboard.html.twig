@@ -1,0 +1,119 @@
+{# templates/admin/dashboard.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Administrateur{% endblock %}
+
+{% block body %}
+<div class="container mt-5 page-container">
+    <h1>Dashboard Administrateur</h1>
+    <div class="btn-group mb-3" role="group" aria-label="Gestion">
+        <button type="button" class="btn btn-primary" id="btn-comments">Commentaires</button>
+        <button type="button" class="btn btn-secondary" id="btn-users">Utilisateurs</button>
+    </div>
+
+    <div id="comments-section">
+        <h2>Gestion des Commentaires</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Contenu</th>
+                    <th>Auteur</th>
+                    <th>Post</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.conten }}</td>
+                        <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
+                        <td>{{ comment.post.title }}</td>
+                        <td>{{ comment.status|capitalize }}</td>
+                        <td>
+                            <!-- Actions -->
+                            {% if comment.status != 'approved' %}
+                                <form method="post" action="{{ path('comment_approve', {'id': comment.id}) }}" style="display:inline-block;" onsubmit="return confirm('Approuver ce commentaire ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('approve' ~ comment.id) }}">
+                                    <button class="btn btn-success btn-sm">Approuver</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{{ path('comment_disapprove', {'id': comment.id}) }}" style="display:inline-block;" onsubmit="return confirm('Désapprouver ce commentaire ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('disapprove' ~ comment.id) }}">
+                                    <button class="btn btn-warning btn-sm">Désapprouver</button>
+                                </form>
+                            {% endif %}
+
+                            <form method="post" action="{{ path('comment_delete', {'id': comment.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                <button class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun commentaire trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="users-section" style="display:none;">
+        <h2>Gestion des Utilisateurs</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Nom</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.firstName }} {{ user.lastName }}</td>
+                        <td>{{ user.isActive() ? 'Actif' : 'Inactif' }}</td>
+                        <td>
+                            <!-- Actions -->
+                            <form method="post" action="{{ path('user_toggle_active', {'id': user.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir activer/désactiver ce compte ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ user.id) }}">
+                                <button class="btn btn-secondary btn-sm">
+                                    {{ user.isActive() ? 'Désactiver' : 'Activer' }}
+                                </button>
+                            </form>
+
+                            <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun utilisateur trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btn-comments').addEventListener('click', function() {
+        document.getElementById('comments-section').style.display = 'block';
+        document.getElementById('users-section').style.display = 'none';
+    });
+
+    document.getElementById('btn-users').addEventListener('click', function() {
+        document.getElementById('comments-section').style.display = 'none';
+        document.getElementById('users-section').style.display = 'block';
+    });
+</script>
+{% endblock %}

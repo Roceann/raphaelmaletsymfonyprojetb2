@@ -1,0 +1,68 @@
+{# templates/post/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Posts{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Liste des Posts</h1>
+    
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="btn-group mb-3">
+            <a href="{{ path('post_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter un Post
+            </a>
+            <a href="{{ path('category_list') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Gérer les catégories
+            </a>
+        </div>
+    {% endif %}
+
+    {# Formulaire de Filtrage par Catégorie #}
+    <form method="get" action="{{ path('news') }}" class="mb-4">
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <label class="sr-only" for="categorySelect">Catégorie</label>
+                <select class="form-control mb-2" id="categorySelect" name="category">
+                    <option value="">Toutes les Catégories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selected_category and category.id == selected_category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-2">Filtrer</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row justify-content-center">
+        {% for post in posts %}
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        {% if post.picture %}
+                            <img src="{{ asset('uploads/pictures/' ~ post.picture) }}" class="img-fluid mb-3" alt="{{ post.title }}" style="max-width: 100%; height: auto;">
+                        {% endif %}
+                        <p class="card-text">{{ post.content|slice(0, 200) ~ '...' }}</p>
+                        <a href="{{ path('post_detail', {'id': post.id}) }}" class="btn btn-primary">Voir le détail</a>
+
+                        {# Boutons d'édition et de suppression pour l'auteur ou l'administrateur #}
+                        {% if is_granted('ROLE_ADMIN') or post.user == app.user %}
+                            <a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-warning mt-2">Modifier</a>
+                            <form action="{{ path('post_delete', {'id': post.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                <button type="submit" class="btn btn-danger mt-2">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <!-- Commentaires -->
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

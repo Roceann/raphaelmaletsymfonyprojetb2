@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Profil{% endblock %}
+
+{% block body %}
+<div class="container mt-5 page-container">
+    <h1>Modifier le profil de {{ app.user.firstName }} {{ app.user.lastName }}</h1>
+    <img src="{{ asset('uploads/profiles/' ~ (app.user.profilePicture ? app.user.profilePicture : 'default-avatar.jpg')) }}" alt="Photo de profil" class="img-fluid rounded mb-3" width="150" height="150">
+    <form method="post" enctype="multipart/form-data" action="{{ path('edit_profile') }}">
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.userName) }}
+                {{ form_widget(form.userName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.userName) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.firstName) }}
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.lastName) }}
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.password) }}
+                {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.password) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.profilePicture) }}
+                {{ form_widget(form.profilePicture, {'attr': {'class': 'form-control-file'}}) }}
+                {{ form_errors(form.profilePicture) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Modifier</button>
+        {{ form_end(form) }}
+    </form>
+</div>
+{% endblock %}
