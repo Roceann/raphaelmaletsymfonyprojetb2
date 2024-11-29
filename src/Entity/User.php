@@ -77,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = ['ROLE_USER'];
         $this->isActive = true;
 
+        
     }
 
     // Getters and setters...
