@@ -1,8 +1,9 @@
 <?php
 // src/Controller/PostController.php
-
 namespace App\Controller;
 
+// Importation des fonctions globales nécessaires
+use function transliterator_transliterate;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Entity\Comment;
@@ -65,8 +66,7 @@ class PostController extends AbstractController
             $pictureFile = $form['picture']->getData();
             if ($pictureFile) {
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$pictureFile->guessExtension();
 
                 try {
                     $pictureFile->move(
@@ -136,7 +136,7 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_USER')]
+
     #[Route('/post/{id}', name: 'post_detail')]
     public function detail(Post $post, Request $request, EntityManagerInterface $em, CommentRepository $commentRepository): Response
     {

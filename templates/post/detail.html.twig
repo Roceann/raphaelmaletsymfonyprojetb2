@@ -5,6 +5,18 @@
 
 {% block body %}
 <div class="container mt-4">
+    {# Affichage des messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <h1>{{ post.title }}</h1>
     {% if post.picture %}
         <img src="{{ asset('uploads/pictures/' ~ post.picture) }}" class="img-fluid mb-4 d-block mx-auto" alt="{{ post.title }}" width="30%">

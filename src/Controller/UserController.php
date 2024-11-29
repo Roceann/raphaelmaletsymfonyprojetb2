@@ -29,7 +29,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/edit', name: 'edit_profile', methods: ['GET', 'POST'])]
+    #[Route('/profiledit', name: 'edit_profile', methods: ['GET', 'POST'])]
     public function editProfile(
         Request $request,
         EntityManagerInterface $entityManager
@@ -52,7 +52,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        return $this->render('main/editProfile.html.twig', [
+        return $this->render('main/profiledit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
